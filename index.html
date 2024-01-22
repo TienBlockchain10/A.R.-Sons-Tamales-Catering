@@ -36,7 +36,7 @@
 
 <body>
 	<!-- Start header -->
-	<header class="top-navbar">
+	<header class="top-navbar" >
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<div class="container">
 				<a class="navbar-brand" href="index.html">
@@ -49,8 +49,10 @@
 				<div class="collapse navbar-collapse" id="navbars-rs-food">
 					<ul class="navbar-nav ml-auto">
 						<li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
-						<li class="nav-item"><a class="nav-link" href="menu.html">Menu</a></li>
-						<li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+						<li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+						<li class="nav-item"><a class="nav-link"  href="#menu">Menu</a></li>
+						
+	
 						<!-- <li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="dropdown-a"
 								data-toggle="dropdown">Pages</a>
@@ -77,7 +79,7 @@
 	<!-- End header -->
 
 	<!-- Start slides -->
-	<div id="slides" class="cover-slides">
+	<div id="slides" class="cover-slides" class="container-fluid wow fadeIn" id="about"data-wow-duration="1.5s">
 		<ul class="slides-container">
 			<li class="text-center">
 				<img src="images/tamales.jpg" alt="">
@@ -124,7 +126,7 @@
 	<!-- End slides -->
 
 	<!-- Start About -->
-	<div class="about-section-box">
+	<div class="about-section-box" id="about" >
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6 col-md-6 col-sm-12">
@@ -160,7 +162,7 @@
 	<!-- End QT -->
 
 	<!-- Start Menu -->
-	<div class="menu-box">
+	<div class="menu-box" id="menu" >
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">

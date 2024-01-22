@@ -40,19 +40,22 @@
     Map Full
     ................................................. */
 	
-	$(document).ready(function(){ 
-		$(window).on('scroll', function () {
-			if ($(this).scrollTop() > 100) { 
-				$('#back-to-top').fadeIn(); 
-			} else { 
-				$('#back-to-top').fadeOut(); 
-			} 
-		}); 
-		$('#back-to-top').click(function(){ 
-			$("html, body").animate({ scrollTop: 0 }, 600); 
-			return false; 
-		}); 
-	});
+	// $(document).ready(function(){ 
+	// 	$(window).on('scroll', function () {
+	// 		if ($(this).scrollTop() > 100) { 
+	// 			$('#back-to-top').fadeIn(); 
+	// 		} else { 
+	// 			$('#back-to-top').fadeOut(); 
+	// 		} 
+	// 	}); 
+	// 	$('#back-to-top').click(function(){ 
+	// 		$("html, body").animate({ scrollTop: 0 }, 600); 
+	// 		return false; 
+	// 	}); 
+
+
+		
+	// });
 	
 	/* ..............................................
     Special Menu
@@ -91,9 +94,29 @@
 	$('.datepicker').pickadate();
 	
 	$('.time').pickatime();
+
 	
-	
-	
+
+		
+// smooth scroll
+$(document).ready(function(){
+    var headerHeight = 70; // Height of your fixed header
+    $(".navbar .nav-link").on('click', function(event) {
+        if (this.hash !== "") {
+            event.preventDefault();
+            var hash = this.hash;
+
+            $('html, body').animate({
+                scrollTop: $(hash).offset().top - headerHeight
+            }, 700, function(){
+                // Add the hash (#) to the page url after the scroll
+                history.pushState(null, null, hash);
+            });
+        } 
+    });
+});
+
+
 	
 	
 }(jQuery));
