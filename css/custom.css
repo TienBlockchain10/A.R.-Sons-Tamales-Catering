@@ -50,10 +50,10 @@ html {
   .quantity-select{
     cursor: pointer;
   }
-
+/* 
   #cart-items-dropdown .dropdown-item {
     cursor: default;
-}
+} */
 
 
 #order-summary {
