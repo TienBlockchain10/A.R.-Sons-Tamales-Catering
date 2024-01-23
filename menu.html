@@ -52,7 +52,9 @@
 						<li class="nav-item "><a class="nav-link" href="about.html">About</a></li>
 						<li class="nav-item active"><a class="nav-link"  href="menu.html">Menu</a></li>
 						
-	
+
+
+
 						<!-- <li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="dropdown-a"
 								data-toggle="dropdown">Pages</a>
@@ -70,7 +72,30 @@
 							</div>
 						</li> -->
 						<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-						<li class="nav-item"><a class="nav-link" href="checkout.html">Checkout</a></li>
+						<!-- <li class="nav-item"><a class="nav-link" href="checkout.html">Checkout</a></li> -->
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="cart-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fa fa-shopping-cart"></i> Cart
+								<span id="cart-count" class="badge badge-pill badge-danger">0</span>
+							</a>
+							<div class="dropdown-menu" aria-labelledby="cart-dropdown" id="cart-items-dropdown">
+								<div id="cart-items">
+									<!-- Cart items will be added here dynamically -->
+								</div>
+								<div class="dropdown-divider"></div>
+								<div class="d-flex justify-content-between px-4">
+									<span>Total:</span>
+									<span id="cart-total">0.00</span>
+								</div>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item text-center" href="checkout.html">Checkout</a>
+							</div>
+						</li>
+						
+
+
+					
+						
 					</ul>
 				</div>
 			</div>
@@ -176,6 +201,17 @@
 							<h4>Pork</h4>
 							<p>W/ Beans and Cheese</p>
 							<h5> $10.79</h5>
+							<div class="price-and-controls">
+								<select class="quantity-select">
+								  <option value="1" selected>1</option>
+								  <option value="2">2</option>
+								  <option value="3">3</option>
+								  <option value="4">4</option>
+								  <option value="5">5</option>
+								  <!-- Add more options as needed -->
+								</select>
+								<button class="add-to-cart-btn" data-name="Pork W/ Beans & Cheese" data-price="7.79">Add to Cart</button>
+							  </div>
 						</div>
 					</div>
 				</div>

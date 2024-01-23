@@ -52,8 +52,8 @@
 				<div class="collapse navbar-collapse" id="navbars-rs-food">
 					<ul class="navbar-nav ml-auto">
 						<li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-						<li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-						<li class="nav-item"><a class="nav-link"  href="index.html">Menu</a></li>
+						<li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+						<li class="nav-item"><a class="nav-link"  href="menu.html">Menu</a></li>
 						
 	
 						<!-- <li class="nav-item dropdown">
@@ -109,26 +109,26 @@
 			<div class="row">
 				<div class="col-lg-12 col-sm-12 col-xs-12">
 					<div class="contact-block">
-						<!-- <form id="contactForm">
+						<form id="checkout-form" action="https://formspree.io/f/mqkreeky" method="POST">
 							<div class="row">
 								<div class="col-md-6">
 									<h3>Order Details</h3>
-
-							
-									<div class="col-md-12">
-										<div class="form-group">
+									<div class="col-md-12"><div id="order-summary">
+										<!-- Cart items will be added here dynamically -->
+									</div>
+										<!-- <div class="form-group">
 											<input id="input_date" class="datepicker picker__input form-control" name="date" type="text" value="" equired data-error="Please enter Date">
 											<div class="help-block with-errors"></div>
-										</div>                                 
+										</div>                                  -->
 									</div>
 									<div class="col-md-12">
-										<div class="form-group">
+										<!-- <div class="form-group">
 											<input id="input_time" class="time form-control picker__input" required data-error="Please enter time">
 											<div class="help-block with-errors"></div>
-										</div>                                 
+										</div>                                  -->
 									</div>
 									<div class="col-md-12">
-										<div class="form-group">
+										<!-- <div class="form-group">
 											<select class="custom-select d-block form-control" id="person" required data-error="Please select Person">
 											  <option disabled selected>Select Person*</option>
 											  <option value="1">1</option>
@@ -140,7 +140,7 @@
 											  <option value="7">7</option>
 											</select>
 											<div class="help-block with-errors"></div>
-										</div> 
+										</div>  -->
 									</div>
 								</div>
 								<div class="col-md-6">
@@ -150,38 +150,48 @@
 											<input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required data-error="Please enter your name">
 											<div class="help-block with-errors"></div>
 										</div>                                 
+										
 									</div>
 									<div class="col-md-12">
 										<div class="form-group">
 											<input type="text" placeholder="Your Email" id="email" class="form-control" name="email" required data-error="Please enter your email">
 											<div class="help-block with-errors"></div>
 										</div> 
+										
 									</div>
 									<div class="col-md-12">
 										<div class="form-group">
 											<input type="text" placeholder="Your Numbar" id="phone" class="form-control" name="phone" required data-error="Please enter your Numbar">
 											<div class="help-block with-errors"></div>
 										</div> 
+										
 									</div>
 								</div>
 								<div class="col-md-12">
-									<div class="submit-button text-center">
-										<button class="btn btn-common" id="submit" type="submit">Place Order</button>
-										<div id="msgSubmit" class="h3 text-center hidden"></div> 
-										<div class="clearfix"></div> 
+									<!-- ... other code ... -->
+								<div class="submit-button text-center">
+   									 <button class="btn btn-common" id="submit-btn" type="submit">Place Order</button>
+										<input type="hidden" name="order-details" id="order-details"> 
+    									<div id="msgSubmit" class="h3 text-center hidden"></div> 
+    										<div class="clearfix"></div> 
 									</div>
+			<!-- ... other code ... -->
+
 								</div>
 							</div>            
-						</form> --><div id="cart-display"></div>
-
-						<form id="checkout-form" action="https://formspree.io/f/mqkreeky" method="POST">
-							<input type="text" name="name" required placeholder="Your Name">
-							<input type="email" name="email" required placeholder="Your Email">
-							<input type="tel" name="phone" required placeholder="Your Phone">
-							<input type="hidden" name="order-details" id="order-details">
-							<input type="submit" value="Checkout">
-						  </form>
+						</form>
+					</div> 
 						
+					 <!-- <form id="checkout-form" action="https://formspree.io/f/mqkreeky" method="POST">
+						<input type="text" name="name" required placeholder="Your Name">
+						<input type="email" name="email" required placeholder="Your Email">
+						<input type="tel" name="phone" required placeholder="Your Phone">
+						<input type="hidden" name="order-details" id="order-details"> 
+						<input type="submit" value="Checkout">
+					  </form>  -->
+						<!-- Somewhere in your HTML -->
+<div class="status-message" class="status-message.success" class="status-message.error" id="status-message"></div>
+
 					</div>
 				</div>
 			</div>
@@ -362,6 +372,37 @@
 	<script src="js/form-validator.min.js"></script>
     <script src="js/contact-form-script.js"></script>
     <script src="js/custom.js"></script>
+	<script>function updateCartDisplay() {
+		const orderSummary = document.getElementById('order-summary');
+		const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+		
+		orderSummary.innerHTML = ''; // Clear previous order summary
+		let total = 0;
+		
+		cartItems.forEach(item => {
+			total += item.price * item.quantity;
+			const itemRow = document.createElement('div');
+			itemRow.className = 'order-item';
+			itemRow.innerHTML = `
+				<span>${item.name}</span>
+				<span>$${item.price.toFixed(2)}</span>
+				<span>x${item.quantity}</span>
+				<span>$${(item.price * item.quantity).toFixed(2)}</span>
+			`;
+			orderSummary.appendChild(itemRow);
+		});
+		
+		const totalRow = document.createElement('div');
+		totalRow.className = 'order-total';
+		totalRow.innerHTML = `<strong>Total: $${total.toFixed(2)}</strong>`;
+		orderSummary.appendChild(totalRow);
+	}
+	
+	// Call this function to update the display when the checkout page loads
+	document.addEventListener('DOMContentLoaded', updateCartDisplay);
+	</script>
+
+	
 
 </body>
 </html>

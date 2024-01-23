@@ -42,3 +42,96 @@ html {
     margin: 0 5px; /* Adjust spacing as needed */
   }
   
+  .add-to-cart-btn {
+    cursor: pointer;
+    /* Other styles for your button */
+}
+
+  .quantity-select{
+    cursor: pointer;
+  }
+
+  #cart-items-dropdown .dropdown-item {
+    cursor: default;
+}
+
+
+#order-summary {
+  margin-bottom: 20px;
+}
+
+.order-item, .order-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.order-total strong {
+  font-size: 1.2em;
+}
+
+  #status-message {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    color: #fff;
+    text-align: center;
+    display: none; /* Hide initially */
+  }
+
+  #status-message.success {
+    background-color: #28a745; /* Green for success */
+    display: block; /* Show when there is a message */
+    font-size: large;
+    font-weight: bolder;
+  }
+
+  #status-message.error {
+    background-color: #dc3545; /* Red for error */
+    display: block; /* Show when there is a message */
+    font-size: large;
+    font-weight: bolder;
+  }
+
+/* Style for the cart dropdown */
+.dropdown-menu {
+  min-width: 500px; /* Set a minimum width for the dropdown */
+  padding: 10px; /* Add some padding for content inside */
+}
+
+/* Style for each item in the cart */
+.dropdown-item {
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Space out the item name and delete button */
+  align-items: center; /* Center items vertically */
+  margin-bottom: 5px; /* Add some margin below each item */
+}
+
+/* Style for the delete button */
+.delete-btn {
+  padding: 3px 8px; /* Add padding to the delete button */
+  background-color: #dc3545; /* Bootstrap danger color for the background */
+  color: white; /* White text color */
+  border: none; /* No border */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 0.8rem; /* Smaller font size */
+}
+
+/* Style for the cart total section */
+.cart-total-section {
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Space out the "Total" label and the total amount */
+  padding-top: 10px; /* Add padding above the total section */
+  border-top: 1px solid #ddd; /* Add a separator line above the total section */
+  margin-top: 10px; /* Add margin above the separator line */
+}
+
+/* Style for the checkout button in the cart */
+.checkout-btn {
+  width: 100%; /* Full width button */
+  margin-top: 10px; /* Add some margin above the button */
+}
+
+/* Add custom styles here for other elements as needed */

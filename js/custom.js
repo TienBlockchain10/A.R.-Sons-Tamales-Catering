@@ -147,16 +147,44 @@ function addToCart(button) {
 
     updateCartDisplay();
     saveCart();
+	updateCartCount();
+}
+
+function updateCartCount() {
+    const cartCount = document.getElementById('cart-count');
+    if (cartCount) {
+        let totalCount = cart.reduce((total, item) => total + item.quantity, 0);
+        cartCount.textContent = totalCount;
+    }
 }
 
 function updateCartDisplay() {
-    const cartDisplay = document.getElementById('cart-display');
-    cartDisplay.innerHTML = ''; // Clear the cart display
-    cart.forEach(item => {
-        console.log("Updating display for item:", item);
-        cartDisplay.innerHTML += `<p>${item.name} - $${item.price} x ${item.quantity}</p>`;
+    const cartItemsContainer = document.getElementById('cart-items');
+    const cartTotal = document.getElementById('cart-total');
+
+    // Clear the cart display
+    cartItemsContainer.innerHTML = '';
+    let total = 0;
+
+     // Add items to the cart display with a delete button
+	 cart.forEach((item, index) => {
+        total += item.price * item.quantity;
+        const itemElement = document.createElement('div');
+        itemElement.className = 'cart-item';
+        itemElement.innerHTML = `
+            ${item.name} - $${item.price.toFixed(2)} x ${item.quantity}
+            <button onclick="deleteItemFromCart(${index})" class="delete-item-btn">Delete</button>
+        `;
+        cartItemsContainer.appendChild(itemElement);
     });
+
+    // Update the total
+    cartTotal.textContent = `$${total.toFixed(2)}`; // Converts to string with two decimal places
 }
+
+
+
+
 
 function saveCart() {
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -167,6 +195,7 @@ function loadCart() {
     if (savedCart) {
         cart = JSON.parse(savedCart);
         updateCartDisplay();
+        updateCartCount();
     }
 }
 
@@ -174,12 +203,54 @@ function clearCart() {
     localStorage.removeItem('cart');
     cart = [];
     updateCartDisplay();
+    updateCartCount();
     console.log("Cart cleared");
 }
 
-// DOMContentLoaded event to ensure the DOM is fully loaded before attaching event listeners
+// document.addEventListener('DOMContentLoaded', function() {
+//     loadCart();
+
+//     document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+//         button.addEventListener('click', function() {
+//             addToCart(this);
+//         });
+//     });
+
+//     const checkoutForm = document.getElementById('checkout-form');
+//     if (checkoutForm) {
+//         checkoutForm.addEventListener('submit', function(e) {
+//             e.preventDefault();
+//             const orderDetailsInput = document.getElementById('order-details');
+//             orderDetailsInput.value = JSON.stringify(cart);
+//             console.log("Submitting order:", cart);
+
+//             // Here you would send the form data using Fetch or another AJAX method
+//             fetch('https://formspree.io/f/mqkreeky', {
+//                 method: 'POST',
+//                 headers: {
+//                     'Content-Type': 'application/json',
+//                 },
+//                 body: JSON.stringify({
+//                     order: cart,
+//                     name: document.getElementById('name').value,
+//                     email: document.getElementById('email').value,
+//                     phone: document.getElementById('phone').value
+//                 }),
+//             })
+//             .then(response => response.json())
+//             .then(data => {
+//                 console.log('Success:', data);
+//                 clearCart(); // Clear the cart after successful form submission
+//             })
+//             .catch((error) => {
+//                 console.error('Error:', error);
+//             });
+//         });
+//     }
+// });
 document.addEventListener('DOMContentLoaded', function() {
     loadCart();
+	updateCartDisplay();
 
     document.querySelectorAll('.add-to-cart-btn').forEach(button => {
         button.addEventListener('click', function() {
@@ -188,16 +259,63 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     const checkoutForm = document.getElementById('checkout-form');
+    const statusMessage = document.getElementById('status-message'); // Ensure you have a status message element in your HTML
+
     if (checkoutForm) {
         checkoutForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const orderDetailsInput = document.getElementById('order-details');
-            orderDetailsInput.value = JSON.stringify(cart);
-            console.log("Submitting order:", cart);
 
-            // Uncomment the line below when ready to submit to Formspree
-            this.submit();
-            clearCart();
+            // Prepare the form data
+            const formData = {
+                order: cart,
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value
+            };
+
+            // Send the form data
+            fetch('https://formspree.io/f/mqkreeky', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // or 'response.text()' if the response is not JSON
+                } else {
+                    throw new Error('Network response was not ok.');
+                }
+            })
+            .then(data => {
+                console.log('Success:', data);
+                // Update the UI to show a success message
+                statusMessage.textContent = "Thank you for your order! Your Tamales will be ready for pickup soon!";
+                statusMessage.className = "success"; // Add a 'success' class for styling if desired
+
+                clearCart(); // Clear the cart after successful form submission
+				updateCartDisplay(); // Update cart display to show empty cart
+                updateCartCount(); // Update the cart count to zero
+                // Optionally, redirect to a thank-you page
+                // window.location.href = 'thank-you.html';
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                // Update the UI to show an error message
+                statusMessage.textContent = "There was a problem with your submission. Please try again.";
+                statusMessage.className = "error"; // Add an 'error' class for styling if desired
+            });
         });
     }
 });
+
+
+// Function to delete an item from the cart
+function deleteItemFromCart(itemIndex) {
+    cart.splice(itemIndex, 1); // Remove the item from the cart array
+    saveCart(); // Save the updated cart to local storage
+    updateCartDisplay(); // Update the cart display
+    updateCartCount(); // Update the cart count
+}
