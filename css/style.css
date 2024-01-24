@@ -169,7 +169,7 @@ button:focus{
       float: right;
       margin-top: 0px; /* Adjust this value to align the cart icon with the logo vertically */
       margin-left: -20px;
-      margin-right: -20px;
+      margin-right: 0px;
     }
   
     .navbar-toggler {
