@@ -157,6 +157,28 @@ button:focus{
 /*------------------------------------------------------------------
     HEADER
 -------------------------------------------------------------------*/
+
+
+@media (max-width: 768px) { /* Adjust the max-width as needed for your layout */
+    .navbar-brand {
+      float: left;
+      margin-right: 15px; /* Adjust this value to ensure the logo and the cart are on the same line */
+    }
+  
+    #cart-icon {
+      float: right;
+      margin-top: -10px; /* Adjust this value to align the cart icon with the logo vertically */
+    }
+  
+    .navbar-toggler {
+      float: right;
+      clear: both; /* This ensures the toggle is on a new line */
+    }
+  }
+  
+
+
+
 .top-navbar{
 	position: relative;
 	z-index: 10;
