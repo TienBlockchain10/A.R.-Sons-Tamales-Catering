@@ -55,6 +55,7 @@
 				<a class="navbar-brand" href="index.html">
 					<img src="images/logo.png" alt="" />
 				</a>
+				
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-rs-food"
 					aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
@@ -86,15 +87,15 @@
 						</li> -->
 						<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
 						<!-- <li class="nav-item"><a class="nav-link" href="checkout.html">Checkout</a></li> -->
-						<li class="nav-item dropdown">
+						<!-- <li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="cart-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<i class="fa fa-shopping-cart"></i> Cart
 								<span id="cart-count" class="badge badge-pill badge-danger">0</span>
 							</a>
 							<div class="dropdown-menu" aria-labelledby="cart-dropdown" id="cart-items-dropdown">
-								<div id="cart-items">
+								<div id="cart-items"> -->
 									<!-- Cart items will be added here dynamically -->
-								</div>
+								<!-- </div>
 								<div class="dropdown-divider"></div>
 								<div class="d-flex justify-content-between px-4">
 									<span>Total:</span>
@@ -103,14 +104,40 @@
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item text-center" href="checkout.html">Checkout</a>
 							</div>
-						</li>
+						</li> -->
 						
 
 
 					
 						
 					</ul>
-				</div>
+				</div><li class="nav-item dropdown">
+					<!-- <a class="nav-link dropdown-toggle" href="#" id="cart-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fa fa-shopping-cart"></i> Cart
+						<span id="cart-count" class="badge badge-pill badge-danger">0</span>
+					</a> --><!-- Remove the dropdown classes and data-toggle attributes from the cart icon -->
+<a class="nav-link" href="#" id="cart-icon">
+	<i class="fa fa-shopping-cart"></i> Cart
+	<span id="cart-count" class="badge badge-pill badge-danger">0</span>
+  </a>
+  
+					<!-- <div class="dropdown-menu" aria-labelledby="cart-dropdown" id="cart-items-dropdown">
+						<div id="cart-items"> -->
+							<!-- Cart items will be added here dynamically -->
+						<!-- </div>
+						<div class="dropdown-divider"></div>
+						<div class="d-flex justify-content-between px-4">
+							<span>Total:</span>
+							<span id="cart-total">0.00</span>
+						</div>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item text-center" href="checkout.html">Checkout</a>
+					</div>
+				</li> -->
+
+				<!-- Cart Modal -->
+
+  
 			</div>
 		</nav>
 	</header>
@@ -128,6 +155,20 @@
 			</div>
 		</div>
 	</div>
+
+	<div id="cartModal" class="modal">
+		<div class="modal-content">
+		  <span class="close">&times;</span>
+		  <h4>Cart</h4>
+		  <div id="cart-items">
+			<!-- Cart items will be added here dynamically -->
+		  </div>
+		  <div class="cart-total">
+			<strong>Total: $<span id="cart-total">0.00</span></strong>
+		  </div>
+		  <button onclick="window.location.href='checkout.html'">Checkout</button>
+		</div>
+	  </div>
 	<!-- End All Pages -->
 	
 	<!-- Start Menu -->
