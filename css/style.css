@@ -174,7 +174,7 @@ button:focus{
   
     .navbar-toggler {
       float: right;
-      clear: both; /* This ensures the toggle is on a new line */
+   
     }
   }
   
