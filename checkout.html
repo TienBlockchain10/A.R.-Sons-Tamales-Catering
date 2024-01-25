@@ -55,7 +55,7 @@
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<div class="container">
 				<a class="navbar-brand" href="index.html">
-					<img src="images/logo.png" alt="" />
+					<img src="images/ARTamalesLogo.png" alt="" />
 				</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-rs-food"
 					aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,8 +85,12 @@
 							</div>
 						</li> -->
 						<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-						<li class="nav-item active"><a class="nav-link" href="checkout.html">Checkout</a></li>
+						<!-- <li class="nav-item active"><a class="nav-link" href="checkout.html">Checkout</a></li> -->
 					</ul>
+					<a class="nav-link" href="#" id="cart-icon">
+						<i class="fa fa-shopping-cart"></i> Cart
+						<span id="cart-count" class="badge badge-pill badge-danger">0</span>
+					  </a>
 				</div>
 			</div>
 		</nav>
@@ -104,6 +108,31 @@
 			</div>
 		</div>
 	</div>
+
+
+	<div id="cartModal" class="modal">
+		<div class="modal-content">
+		  <span class="close">&times;</span>
+		  <h4>Your Items</h4>
+		  <div id="cart-items">
+			<!-- Cart items will be added here dynamically -->
+		  </div>
+		  <div class="cart-total">
+			<strong>Total: <span id="cart-total">0.00</span></strong>
+		  </div>
+		  <button onclick="window.location.href='checkout.html'">Checkout</button>
+		</div>
+	  </div>
+
+	  		  <!-- Modal Structure -->
+<div id="menu-item-modal" class="modal">
+	<div class="modal-content">
+	  <span class="close-modal">&times;</span>
+	  <h1><strong>Added To Cart</strong></h1>
+	  <h2 id="modal-item-name"></h2>
+	  <button class="btn btn-primary-modal" id="add-to-cart-modal" href="menu.html" >Got it!</button>
+	</div>
+  </div>
 	<!-- End All Pages -->
 	
 	<!-- Start Reservation -->
@@ -113,7 +142,7 @@
 				<div class="col-lg-12">
 					<div class="heading-title text-center">
 						<h2>Place Your Order</h2>
-						 <p>Select the menu items you would like to order and choose the quantity for each. All orders are prepared by the dozen and can be picked up the next day.</p>
+						 <p>Please make sure to let us know whether your want spicy or non-spicy tamales and what type of cheese!</p>
 
 					</div>
 				</div>
@@ -173,14 +202,14 @@
 									</div>
 									<div class="col-md-12">
 										<div class="form-group">
-											<input type="text" placeholder="Your Numbar" id="phone" class="form-control" name="phone" required data-error="Please enter your Numbar">
+											<input type="text" placeholder="Your Number" id="phone" class="form-control" name="phone" required data-error="Please enter your Numbar">
 											<div class="help-block with-errors"></div>
 										</div> 
 										
 									</div>
 									<div class="col-md-12">
 										<div class="form-group">
-											<input type="text" placeholder="Any additional details such as spicy or non-spicy, cheese type, etc." id="Info" class="form-control" name="info" required data-error="Any additional details such as spicy or non-spicy, cheese type, etc.">
+											<input type="text" placeholder="Any additional details such as spicy or non-spicy, cheese type, etc." id="info" class="form-control" name="info" required data-error="Please choose cheese type and spice or no-spice">
 											<div class="help-block with-errors"></div>
 										</div> 
 										
@@ -392,8 +421,15 @@
     <script src="js/contact-form-script.js"></script>
     <script src="js/custom.js"></script>
 	<script>function updateCartDisplay() {
-		const orderSummary = document.getElementById('order-summary');
-		const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+		 const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+  
+  // Update order-summary element
+  const orderSummary = document.getElementById('order-summary');
+  updateCartElement(cartItems, orderSummary);
+  
+  // Update cart-items element for the modal
+  const cartModalItems = document.getElementById('cart-items');
+  updateCartElement(cartItems, cartModalItems);
 		
 		orderSummary.innerHTML = ''; // Clear previous order summary
 		let total = 0;
@@ -420,7 +456,31 @@
 	// Call this function to update the display when the checkout page loads
 	document.addEventListener('DOMContentLoaded', updateCartDisplay);
 	</script>
-
+	
+	<script>function updateCartElement(cartItems, element) {
+		if (!element) return;  // If the element is not found, exit the function
+	  
+		element.innerHTML = ''; // Clear previous items
+		let total = 0;
+		
+		cartItems.forEach(item => {
+		  total += item.price * item.quantity;
+		  const itemRow = document.createElement('div');
+		  itemRow.className = 'order-item';
+		  itemRow.innerHTML = `
+			<span>${item.name}</span>
+			<span>$${item.price.toFixed(2)}</span>
+			<span>x${item.quantity}</span>
+			<span>$${(item.price * item.quantity).toFixed(2)}</span>
+		  `;
+		  element.appendChild(itemRow);
+		});
+	  
+		const totalRow = document.createElement('div');
+		totalRow.className = 'order-total';
+		totalRow.innerHTML = `<strong>Total: $${total.toFixed(2)}</strong>`;
+		element.appendChild(totalRow);
+	  }</script>
 	
 
 </body>

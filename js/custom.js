@@ -57,35 +57,11 @@ console.log("Custom.js file is loaded and running");
 	// 		return false; 
 	// 	}); 
 
-// Get the modal
-var modal = document.getElementById("menu-item-modal");
 
-// Get the button that opens the modal
-var btns = document.getElementsByClassName("add-to-cart-btn");
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close-modal")[0];
 
-// When the user clicks on the button, open the modal
-for (var i = 0; i < btns.length; i++) {
-  btns[i].onclick = function() {
-    var itemName = this.getAttribute('data-name');
-    document.getElementById("modal-item-name").innerHTML = itemName;
-    modal.style.display = "block";
-  }
-}
 
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
-}
 
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
 
 		
 	// });
@@ -129,31 +105,6 @@ window.onclick = function(event) {
 	// $('.time').pickatime();
 
 	
-// Get the modal
-var cartModal = document.getElementById("cartModal");
-
-// Get the button that opens the modal
-var cartBtn = document.getElementById("cart-icon");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks on the button, open the modal
-cartBtn.onclick = function() {
-  cartModal.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  cartModal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == cartModal) {
-    cartModal.style.display = "none";
-  }
-}
 
 		
 // // smooth scroll
@@ -176,6 +127,17 @@ window.onclick = function(event) {
 
 	
 }(jQuery));
+
+
+
+
+
+
+
+
+
+
+
 
 let cart = [];
 
@@ -303,6 +265,58 @@ function clearCart() {
 //     }
 // });
 document.addEventListener('DOMContentLoaded', function() {
+    // Get the modal
+    var modal = document.getElementById("menu-item-modal");
+    var cartModal = document.getElementById("cartModal");
+  
+    // Get the button that opens the modal
+    var btns = document.getElementsByClassName("add-to-cart-btn");
+    var cartBtn = document.getElementById("cart-icon");
+  
+    // Get the <span> elements that close the modals
+    var span = document.getElementsByClassName("close-modal")[0];
+    var cartSpan = document.getElementsByClassName("close")[0]; // Make sure this class is correct
+  
+    // Get the button inside the modal that should also close the modal
+    var addToCartButton = document.getElementById("add-to-cart-modal");
+  
+    // Logic for opening the item modal
+    Array.from(btns).forEach(function(btn) {
+      btn.onclick = function() {
+        var itemName = this.getAttribute('data-name');
+        document.getElementById("modal-item-name").textContent = itemName;
+        modal.style.display = "block";
+      }
+    });
+  
+    // Logic for closing the item modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+  
+    addToCartButton.onclick = function() {
+      modal.style.display = "none";
+    }
+  
+    // Logic for opening the cart modal
+    cartBtn.onclick = function() {
+      cartModal.style.display = "block";
+    }
+  
+    // Logic for closing the cart modal
+    cartSpan.onclick = function() {
+      cartModal.style.display = "none";
+    }
+  
+    // General logic for closing modals when clicking outside
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+      if (event.target == cartModal) {
+        cartModal.style.display = "none";
+      }
+    }
     loadCart();
 	updateCartDisplay();
 
@@ -324,7 +338,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 order: cart,
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value
+                phone: document.getElementById('phone').value,
+                info: document.getElementById('info').value
             };
 
             // Send the form data
@@ -373,3 +388,13 @@ function deleteItemFromCart(itemIndex) {
     updateCartDisplay(); // Update the cart display
     updateCartCount(); // Update the cart count
 }
+
+
+
+
+
+
+
+
+
+
