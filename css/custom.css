@@ -223,3 +223,15 @@ html {
 }
 
 /* Add more styles for the button, cart items, etc. as needed */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 90%; /* Adjust width for smaller screens */
+    padding: 20px; /* Adjust padding as needed */
+  }
+
+  .dropdown-menu {
+    min-width: auto; /* Allow the dropdown to scale with the screen size */
+  }
+
+  /* Adjust font sizes, button sizes, etc., for smaller screens */
+}
