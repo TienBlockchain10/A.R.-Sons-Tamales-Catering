@@ -125,273 +125,154 @@ console.log("Custom.js file is loaded and running");
 //     });
 // });
 
-	
-}(jQuery));
 
 
 
 
+$(document).ready(function() {
+    // Your existing code for the loader, fixed menu, gallery, etc.
 
+    // Initialize an empty cart
+    let cart = [];
 
-
-
-
-
-
-
-let cart = [];
-
-function addToCart(button) {
-    console.log("Add to Cart button clicked");
-
-    // Get the closest .gallery-single ancestor to find the .quantity-select within it
-    const galleryItem = button.closest('.gallery-single');
-    const quantitySelect = galleryItem.querySelector('.quantity-select');
-    const name = button.getAttribute('data-name');
-    const price = parseFloat(button.getAttribute('data-price'));
-    const quantity = parseInt(quantitySelect.value, 10);
-    const item = cart.find(item => item.name === name);
-
-    if (item) {
-        item.quantity += quantity;
-    } else {
-        cart.push({ name, price, quantity });
+    // Function to open the modal with item details
+    function openItemModal(button) {
+        const name = button.getAttribute('data-name');
+        const price = button.getAttribute('data-price');
+        // Set the item details in the modal elements
+        $('#modal-item-name').text(name);
+        $('#modal-item-price').text(price);
+        // Open the modal
+        $('#menu-item-modal').fadeIn();
     }
 
-    console.log("Adding to cart:", name, price, quantity);
-    console.log("Current cart:", cart);
+    // Function to add item to cart from the modal
+    // Define the function in the global scope
+window.addItemToCartFromModal = function() {
+    // Function code here
+        const name = $('#modal-item-name').text();
+        const price = parseFloat($('#modal-item-price').text());
+        const quantity = parseInt($('#modal-quantity-select').val(), 10);
+        // Additional options can be added here, like cheese choice, spicy option, etc.
 
-    updateCartDisplay();
-    saveCart();
-	updateCartCount();
-}
+         // Create an item object
+         const item = {
+            name: name,
+            price: price,
+            quantity: quantity
+        };
 
-function updateCartCount() {
-    const cartCount = document.getElementById('cart-count');
-    if (cartCount) {
-        let totalCount = cart.reduce((total, item) => total + item.quantity, 0);
-        cartCount.textContent = totalCount;
-    }
-}
+        // Check if the item already exists in the cart
+        const existingItem = cart.find(cartItem => cartItem.name === item.name);
+        if (existingItem) {
+            existingItem.quantity += item.quantity;
+        } else {
+            cart.push(item);
+        }
 
-function updateCartDisplay() {
-    const cartItemsContainer = document.getElementById('cart-items');
-    const cartTotal = document.getElementById('cart-total');
-
-    // Clear the cart display
-    cartItemsContainer.innerHTML = '';
-    let total = 0;
-
-     // Add items to the cart display with a delete button
-	 cart.forEach((item, index) => {
-        total += item.price * item.quantity;
-        const itemElement = document.createElement('div');
-        itemElement.className = 'cart-item';
-        itemElement.innerHTML = `
-            ${item.name} - $${item.price.toFixed(2)} x ${item.quantity}
-            <button onclick="deleteItemFromCart(${index})" class="delete-item-btn">Delete</button>
-        `;
-        cartItemsContainer.appendChild(itemElement);
-    });
-
-    // Update the total
-    cartTotal.textContent = `$${total.toFixed(2)}`; // Converts to string with two decimal places
-}
-
-
-
-
-
-function saveCart() {
-    localStorage.setItem('cart', JSON.stringify(cart));
-}
-
-function loadCart() {
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-        cart = JSON.parse(savedCart);
+        // Update cart display and save to local storage
         updateCartDisplay();
-        updateCartCount();
+        saveCart();
+
+        // Close the modal
+        $('#menu-item-modal').fadeOut();
     }
-}
 
-function clearCart() {
-    localStorage.removeItem('cart');
-    cart = [];
-    updateCartDisplay();
-    updateCartCount();
-    console.log("Cart cleared");
-}
+     // Bind the addItemToCartFromModal to the button inside the modal
+    $('#add-to-cart-modal').on('click', addItemToCartFromModal);
 
-// document.addEventListener('DOMContentLoaded', function() {
-//     loadCart();
+    // Function to update the cart display
+    function updateCartDisplay() {
+        // Update the cart UI with the new cart contents
+        // This will depend on how you want to display the items in the cart.
+    }
 
-//     document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-//         button.addEventListener('click', function() {
-//             addToCart(this);
-//         });
-//     });
+    function showCartModal() {
+        $('#cartModal').fadeIn();
+    }
 
-//     const checkoutForm = document.getElementById('checkout-form');
-//     if (checkoutForm) {
-//         checkoutForm.addEventListener('submit', function(e) {
-//             e.preventDefault();
-//             const orderDetailsInput = document.getElementById('order-details');
-//             orderDetailsInput.value = JSON.stringify(cart);
-//             console.log("Submitting order:", cart);
+    // Function to hide the cart modal
+    function hideCartModal() {
+        $('#cartModal').fadeOut();
+    }
 
-//             // Here you would send the form data using Fetch or another AJAX method
-//             fetch('https://formspree.io/f/mqkreeky', {
-//                 method: 'POST',
-//                 headers: {
-//                     'Content-Type': 'application/json',
-//                 },
-//                 body: JSON.stringify({
-//                     order: cart,
-//                     name: document.getElementById('name').value,
-//                     email: document.getElementById('email').value,
-//                     phone: document.getElementById('phone').value
-//                 }),
-//             })
-//             .then(response => response.json())
-//             .then(data => {
-//                 console.log('Success:', data);
-//                 clearCart(); // Clear the cart after successful form submission
-//             })
-//             .catch((error) => {
-//                 console.error('Error:', error);
-//             });
-//         });
-//     }
-// });
-document.addEventListener('DOMContentLoaded', function() {
-    // Get the modal
-    var modal = document.getElementById("menu-item-modal");
-    var cartModal = document.getElementById("cartModal");
-  
-    // Get the button that opens the modal
-    var btns = document.getElementsByClassName("add-to-cart-btn");
-    var cartBtn = document.getElementById("cart-icon");
-  
-    // Get the <span> elements that close the modals
-    var span = document.getElementsByClassName("close-modal")[0];
-    var cartSpan = document.getElementsByClassName("close")[0]; // Make sure this class is correct
-  
-    // Get the button inside the modal that should also close the modal
-    var addToCartButton = document.getElementById("add-to-cart-modal");
-  
-    // Logic for opening the item modal
-    Array.from(btns).forEach(function(btn) {
-      btn.onclick = function() {
-        var itemName = this.getAttribute('data-name');
-        document.getElementById("modal-item-name").textContent = itemName;
-        modal.style.display = "block";
-      }
+    // Attach event handler to the cart icon for opening the cart modal
+    $('#cart-icon').on('click', function() {
+        showCartModal();
     });
-  
-    // Logic for closing the item modal
-    span.onclick = function() {
-      modal.style.display = "none";
+
+    // Attach event handler to the close button of the cart modal
+    $('#cartModal .close').on('click', function() {
+        hideCartModal();
+    });
+
+    // Function to save cart to localStorage
+    function saveCart() {
+        localStorage.setItem('cart', JSON.stringify(cart));
     }
-  
-    addToCartButton.onclick = function() {
-      modal.style.display = "none";
+
+    // Function to load cart from localStorage
+    function loadCart() {
+        const savedCart = localStorage.getItem('cart');
+        if (savedCart) {
+            cart = JSON.parse(savedCart);
+            updateCartDisplay();
+        }
     }
-  
-    // Logic for opening the cart modal
-    cartBtn.onclick = function() {
-      cartModal.style.display = "block";
+
+      // Update the cart display function to reflect new items
+      function updateCartDisplay() {
+        // Assuming you have some function to update the cart display
+        // Clear existing items
+        $('#cart-items').empty();
+
+        // Add new items to cart
+        cart.forEach(function(item, index) {
+            const itemElement = `
+                <div class="cart-item">
+                    ${item.name} - $${item.price.toFixed(2)} x ${item.quantity}
+                    <button onclick="deleteItemFromCart(${index})" class="delete-item-btn">Delete</button>
+                </div>
+            `;
+            $('#cart-items').append(itemElement);
+        });
+
+        // Update the total
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        $('#cart-total').text(total.toFixed(2));
     }
-  
-    // Logic for closing the cart modal
-    cartSpan.onclick = function() {
-      cartModal.style.display = "none";
+
+    // Attach event handlers
+    $('.add-to-cart-btn').on('click', function(event) {
+        event.preventDefault();
+        openItemModal(this);
+    });
+
+    $('#add-to-cart-modal').on('click', function() {
+        addItemToCartFromModal();
+    });
+
+    $('.close-modal').on('click', function() {
+        $('#menu-item-modal').fadeOut();
+    });
+
+    // Function to delete an item from the cart
+    window.deleteItemFromCart = function(index) {
+        cart.splice(index, 1);
+        saveCart();
+        updateCartDisplay();
+        // ... Other necessary updates after item deletion
     }
-  
-    // General logic for closing modals when clicking outside
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-      if (event.target == cartModal) {
-        cartModal.style.display = "none";
-      }
-    }
+
+    // Call loadCart and updateCartDisplay when the page is ready
     loadCart();
-	updateCartDisplay();
-
-    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            addToCart(this);
-        });
-    });
-
-    const checkoutForm = document.getElementById('checkout-form');
-    const statusMessage = document.getElementById('status-message'); // Ensure you have a status message element in your HTML
-
-    if (checkoutForm) {
-        checkoutForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            // Prepare the form data
-            const formData = {
-                order: cart,
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                info: document.getElementById('info').value
-            };
-
-            // Send the form data
-            fetch('https://formspree.io/f/mqkreeky', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(formData),
-            })
-            .then(response => {
-                if (response.ok) {
-                    return response.json(); // or 'response.text()' if the response is not JSON
-                } else {
-                    throw new Error('Network response was not ok.');
-                }
-            })
-            .then(data => {
-                console.log('Success:', data);
-                // Update the UI to show a success message
-                statusMessage.textContent = "Thank you for your order! Your Tamales will be ready for pickup soon!";
-                statusMessage.className = "success"; // Add a 'success' class for styling if desired
-
-                clearCart(); // Clear the cart after successful form submission
-				updateCartDisplay(); // Update cart display to show empty cart
-                updateCartCount(); // Update the cart count to zero
-                // Optionally, redirect to a thank-you page
-                // window.location.href = 'thank-you.html';
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                // Update the UI to show an error message
-                statusMessage.textContent = "There was a problem with your submission. Please try again.";
-                statusMessage.className = "error"; // Add an 'error' class for styling if desired
-            });
-        });
-    }
+    updateCartDisplay();
 });
 
 
-// Function to delete an item from the cart
-function deleteItemFromCart(itemIndex) {
-    cart.splice(itemIndex, 1); // Remove the item from the cart array
-    saveCart(); // Save the updated cart to local storage
-    updateCartDisplay(); // Update the cart display
-    updateCartCount(); // Update the cart count
-}
 
-
-
-
+	
+}(jQuery));
 
 
 
